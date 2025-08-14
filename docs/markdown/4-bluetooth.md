@@ -5,51 +5,70 @@
 
 ## Bluetooth
 
-Voor deze test gaan we een HC05 bluetooth module gebruiken
+Voor deze test gaan we een HC08 bluetooth module gebruiken
 
 ![bluetooth module](../images/hc05_module.png)
 
-De bluetooth module koppelen we aan poort 1 van de rp2040-rp-maker board.
+Deze module heeft een blauwe led
+* die langzaam knippert, als er geen verbinding is. 
+* die strak blauw is als er wel een verbinding is.
 
-Op de telefoon maken we gebruik van de app BT Car Controller
-![Android app BT Car Controller ](../images/app_bt_car_controller.png)
+De bluetooth module is gekoppeld we aan de UART 1 van de rp2040-rp-maker board. Verwarrend genoeg is dat aansluiting  GROVE3. 
+
+Op de telefoon maken we gebruik van de Dabble App
+![Dabble App ](../images/dabble-app.png)
+
+
 
 Stappen:
-* Installer de BT Car controller op je android telefoon
+* Installer de Dabble App op je android telefoon
 * Zet bluetooth aan en koppel de robot (in de lijst te vinden als DJO_ROBOT)
-* Start de BT Car controller app
-* In de app druk op de connect knop rechtsboven) en verbind met de DJO_ROBOT
+* De pincode voor de bluetooth verbinding is 1234
+* Start de Dabble App controller app
+* In de app druk op de connect knop rechtsboven) en verbind met de DJO_ROBOT-*
+* Open de tegel GamePad.
 
 
 
 ### test 4.1 Eenvoudige bluetooth test
 
-In de library vinden we het bluetooth object.
+In de library vinden we het Dabble object.
 
 Eerst dienen we deze te importeren, en vervolgens te maken:
 
-    from bluetooth import Bluetooth
-    bt = Bluetooth()
+    from dabble import Dabble, Gamepad
+    # bluetooth module verbonden met Grove port 3. Dit is uart nummer 1
+    dabble = Dabble(1)
+    g = Gamepad(dabble)
 
 
 Dan maken we de test
 
-    def test_string():
-      while True:
-          time.sleep_ms(10)    
-          line =  bt.readline()
-          as_string = bt.line2string(line)
-          if line:
-              print("Regel:", as_string)
+    async def show_task():
+        while True:
+            await asyncio.sleep_ms(300)
+            print("snelheid:%s  richting:%s  start:%s  "%( g.snelheid(), g.richting(),g.isStart()))
+            #print("hoek:%s  straal:%s  start:%s  "%( g.hoek(), g.straal(),g.isStart()))
+            #print("select:%s  square:%s  triangle:%s  circle%s  cross:%s"%( g.isSelect(), g.isSquare(), g.isTriangle(), g.isCircle(), g.isCross()))
 
-    print("Druk op toetsen in de bluetooth app op de telefoon")
+De gamepad kan de joystick laten zien 
+* in de vorm van hoek en straal.
+  hoek:
+  * 0  naar rechts
+  * 6  naar boven
+  * 12  naar rechts
+  * 18  naar beneden
 
-    test_string()
+  Straal is een getal van 0 tot en met 7.
+* in de vorm van snelheid (-85 .. 85) en richting (-85..85)  
+
 
 
 ### Zelf uitproberen:
-  * druk op diverse knoppen in de BT Car controller en kijk of de ontvangen karakters overeenkomen met de verzonden karakters (te zien in de app!)
-  * Zet de Advanced mode aan in de app (menu knop rechts boven) en kijk wat er nu verzonden wordt
+  * druk op diverse knoppen van de gamepad in de Dabble App
+  * Zet een hash voor de eerste print regel, en verwijder de hash van de 2e printregel
+  * Zet een hash voor de twee print regel, en verwijder de hash van de 3e print regel
+  * Kijk of je snapt wat er gebeurd. 
 
 ### test 4.2 Bluetooth test met meerdere taken
 
@@ -62,8 +81,8 @@ Dan maken we de test
   | naam| functie| opmerking |
   | --- | --- | --- |
   |task_blink| hartbeat led| De hartbeat gebruiken om te zien of het programma nog aktief is|
-  |task_bt_led| knipper als data ontvangen is via Bluetooth | De taak wordt aktief als de event_blink gezet is
-  |task_bt_receive|Ontvangen en bekijken van Bluetooth data| Als data ontvangen is dat wordt task_bt_led aangezet door event_blink.set()
+  |task_command| app functie | Deze taak bevat de user interface logica van ons programma. Hier bepalen we hoe we de robot kunnen besturen
+  |dabble.task|Ontvangen en zenden van Bluetooth data| Telkens als er een regel ontvangen is gaat led 28 kort aan. Deze taak is te vinden in micropython/lib/dabble.py|
   
 ### taak voor het knipperen van de led als heartbeat van het programma
 
@@ -75,35 +94,39 @@ Dan maken we de test
         led.off()
         await asyncio.sleep_ms(900)
 
-### taak voor knipperen van een led als een regel is ontvangen van bluetooth
-
-    async def task_bt_blink():
-      print("Start taak task_bt_blink")  
-      while True:
-        # wait until the bluetooth task does recieve a line
-        await event_blink.wait()
-        event_blink.clear()
-        bt_led.value(0)
-        await asyncio.sleep_ms(10)
-        bt_led.value(1)
 
 ### taak voor het wachten op een BT regel en deze omzetting in een commando
 
-De taak zal task_bt_blink wakker maken met de event_blink.set()
-
-    async def task_bt_receive():
-      print("Start taak task_bt_receive")
+    # taak voor het wachten op een BT regel en deze omzetting in een commando
+    async def task_command():
+      print("Start taak task_command")
       while True:
         # zorg dat andere taken ook tijd krijgen
-        await asyncio.sleep_ms(10)
-        line =  bt.readline()
-        if line:
-          as_string = bt.line2string(line)
-          if as_string:
-            first_char = as_string[0]
-            event_blink.set()
-            
-            if first_char == "U":
-                print()"Licht Aan")
-            ----    
+        await asyncio.sleep_ms(100)
+        if gamepad.buttonPressed():
+          if gamepad.isStart():
+              print("start")
+          if gamepad.isSelect():
+              print("select")
+          if gamepad.isSquare():
+              print("vierkant")
+          if gamepad.isTriangle():
+              print("driehoek")
+          if gamepad.isCircle():
+              print("cirkel")
+          if gamepad.isCross():
+              print("kruisje")
+
+## Opmerking
+
+Bijna elke taak bevat de regel:
+
+        await asyncio.sleep_ms(xxx)
+
+Deze regel is heel belangrijk voor de werking van het programma
+Hiermee zegt de taak: ik heb even niks te doen. Op dat moment krijgen andere taken de aandacht. 
+
+Zonder deze regel is er maar 1 taak aktief, en de andere taken komen niet meer aan bod.
+
+De taak van de task_blink is om te laten zien dat het programma nog "leeft". Men noemt deze taak ook wel de haertbeat taak.
 

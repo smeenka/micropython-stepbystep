@@ -22,15 +22,21 @@ Wat hebben we hiervoor nodig:
 Opmerking: we gebruiken niet de batterij houder voor 4 batterijen.
 De robot krijgt stroom van een kleine lipo batterij. 
 
+
 ## rp2040-pi-maker
 
 ![rp2040-pi-maker](../images/maker-pi-board-functions.png)
 
+In de repository die bij het project hoort vind je de datasheet van de rp2040-pi-maker.
+
 ## Thonny, de programmeer omgeving
+
 
 Thonny is de programmer omgeving waarmee we de robot gaan programmeren.
 
 ![Thonny](../images/Thonny.png)
+
+[Link naar website van Thonny](https://thonny.org/)
 
 
 

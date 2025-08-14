@@ -27,7 +27,7 @@
 
 * Druk op de stop knop in Thonny
 * In het venster This computer ga naar 
-  * mechanotronica/micropython/test
+  * mechatronica/micropython/test
   * kies programma test_1_1_knipper.py
   * druk op de knop Run
   * Kijk wat er gebeurt
@@ -61,6 +61,7 @@
   * een taak moet altijd minstens een regel hebben met het woord **await**
   * een taak heeft altijd een oneindige **while True** loop
   * heel veel taken kunnen tegelijkertijd uitgevoerd worden
+  
 
 #
     # Taak met 3 parameters: 
@@ -77,7 +78,6 @@
     # plaats een hekje (#) om de taak tijdelijk uit te schakelen
     create_task(task_blink_led( led2, 100, 1500))
     create_task(task_blink_led( led3, 100, 1800))
-    create_task(task_blink_led( led4, 100, 2500))
 
     print("Start het programma test_1_1_knipper_async (voor altijd)")
     # volgende regel mag je niet uitschakelen
@@ -88,5 +88,6 @@
   * Schakel de taak voor led 2 weer aan
   * laat de leds in een ander tempo knipperen
   * pas de start_tijd van enkele leds aan en kijk wat er gebeurd
-  * probeer 6 of 8   ledjes tegelijkertijd te laten knipperen, met verschillend tempo. 
+  * probeer 6  ledjes tegelijkertijd te laten knipperen, met verschillend tempo. 
+  * Led 4 en 5 mag je niet gebruiken. Die zijn al in gebruik voor de bluetooth verbinding.
 

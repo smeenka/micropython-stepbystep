@@ -3,64 +3,82 @@
 
 ## [Home](../micropython-cursus.md)
 
-## R2d2 besturen
+## R2d2 besturen met de telefoon via de Dabble app
 
-### De meest beroemde en geliefde robot in the universe: r2d2:
+### Test test_5_1_robot_bt
 
-![r2d2](../images/r2d2.png)
+Deze test bevat 2 taken
+* task_blink
+* task_command
 
-We noemen onze robot R2d2. Eigenlijk is dat een grapje want de echte r2d2 was een heel slimme robot, die veel meer kan dan alleen maar heen en weer rijden.
+De task_command wordt gestuurd door de dabble gamepad object.
+In het eerste gedeelte worden de knoppen van de gamepad bekeken:
 
-### 3.1 Werken met R2d2
+    async def task_command():
+      print("Start taak task_command")
+      rood = 0
+      groen = 0
+      blauw = 0
+      global command # geef aan dat we de command op regel 20 willen gebruiken
+      global neo
+      while True:
+        # zorg dat andere taken ook tijd krijgen
+        await asyncio.sleep_ms(10)
+        if gamepad.buttonPressed():
+          if gamepad.isStart():
+              print("Toeter")
+              buzzer.setTone(400,100)
+          if gamepad.isSelect():
+              print("select")
+              buzzer.mute()
+          if gamepad.isSquare():
+              print("Blauw aan")
+              blauw = 100
+          if gamepad.isTriangle():
+              print("Rood Aan")
+              rood = 100
+          if gamepad.isCircle():
+              print("Groen Aan")
+              groen = 100
+          if gamepad.isCross():
+              print("kruisje")
+              rood = 0
+              groen = 0
+              blauw = 0
 
-In de library vinden we het R2d2 object.
+In het 2e gedeelte wordt de richting en de snelheid van de robot uitgerekend. Hier is een beetje rekenkunde voor nodig. 
 
-Eerst dienen we deze te importeren:
+Het teken // dien je te leven als: deel het gehele getal door een ander geheel getal, er zorg ervoor dat het resultaat ook een geheel getal (integer) is.
 
-    from r2d2 import R2d2
+Voorbeeld: 
+* p = 7 / 2 . Resultaat: p = 3.5 (p is een float)
+* = = 7 // 2 . Resultaat: p = 3 (p is een integer)
+ 
 
-Dan maken we een r2d2 object. We geven de pinnummers voor de motoren mee m1a, m1b, m2a, m2b.
-Voor het rp2040-pi-maker is dit 8, 9, 10, 11.
 
-    r2d2 = R2d2(1 ,2, 5, 6)  
+        richting = gamepad.richting()
+        snelheid = gamepad.snelheid()
+        links = 0
+        rechts = 0
 
-Vervolgens de test taak:
+        if richting >= 80 or richting <= -70:
+            links = richting // 2
+            rechts = richting // -2
+        else:
+            links = snelheid  + richting // 4 
+            rechts= snelheid  - richting // 4
+        robot.move(links, rechts)
+        neo[0] = (rood, groen, blauw)
+        neo[1] = (rood, groen, blauw)
+        neo.write()
 
-    # Test Taak 
-    async def task_test_r2d2():
-        r2d2.setMassa(1)
-        while True:
-            print("vooruit")
-            r2d2.move(99, 99)
-            await asyncio.sleep(5)
-            print("Linksom")
-            r2d2.move(99, 0)
-            await asyncio.sleep(5)
-            print("Achteruit")
-            r2d2.move(-99, -99)
-            await asyncio.sleep(5)
-            print("Rechtsom")
-            r2d2.move(-99, 0)
-            await asyncio.sleep(5)
-
-En defineren en starten de taak:
-
-    # definieer de taken die we willen gaan uitvoeren
-    asyncio.create_task(task_test_r2d2())
-
-    print("Start de asyncio loop")
-    asyncio.run(r2d2.task())
-
-De taak r2d2.task() is belangrijk. Deze taak zorgt ervoor dat de motoren aangestuurd kunnen worden, en dat de motor langzaam kan optrekken en afremmen.
 
 
 ### Zelf uitproberen:
   * Zet de massa van de robot op 9 en kijk wat er gebeurt
   * Zet de massa van de robot op 0 en kijk wat er gebeurt
-  * Laat de robot een vierkant rijden en dan stoppen
-  * Laat de robot een letter A rijden
+  * Telkens als je op een knop drukt neemt de helderheid van de neopixel toe.
+  * Kies andere functies voor de knoppen, bijvoorbeeld verschillende geluiden of verschillende kleuren.
 
-### Voor de nieuwsgierigen:
-  * Bekijk de file lib/r2d2.py Dit is de library  die het object R2d2 bevat. Kijk hoever je komt om te stappen wat hier gebeurd. 
   
 

@@ -5,10 +5,7 @@
 # ---------------------------------#
 
 print("== test_4_1_bluetooth_gamepad ...")
-
-from bluetooth import Bluetooth
 import time
-
 from machine import Pin
 import asyncio
 from dabble import Dabble, Gamepad

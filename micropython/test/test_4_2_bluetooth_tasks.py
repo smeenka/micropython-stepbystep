@@ -29,7 +29,6 @@ async def task_blink():
 
 
 # taak voor het wachten op een BT regel en deze omzetting in een commando
-# De taak zal andere taken wakker maken met de event.set()
 async def task_command():
   print("Start taak task_command")
   while True:
