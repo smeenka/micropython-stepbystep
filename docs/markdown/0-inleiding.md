@@ -1,4 +1,4 @@
-# Mechanotronica: Micropython cursus
+# Mechatronica: Micropython cursus
 ***
 
 ## [Home](../micropython-cursus.md)

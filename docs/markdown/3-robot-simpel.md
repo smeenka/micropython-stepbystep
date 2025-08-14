@@ -1,4 +1,4 @@
-# Mechanotronica: Micropython cursus
+# Mechatronica: Micropython cursus
 ***
 
 ## [Home](../micropython-cursus.md)
@@ -13,7 +13,7 @@ We noemen onze robot R2d2. Eigenlijk is dat een grapje want de echte r2d2 was ee
 
 ### 3.1 Werken met R2d2
 
-In de library vinden we de R2d2 klasse.
+In de library vinden we het R2d2 class.
 
 Eerst dienen we deze te importeren:
 
@@ -22,7 +22,7 @@ Eerst dienen we deze te importeren:
 Dan maken we een r2d2 object. We geven de pinnummers voor de motoren mee m1a, m1b, m2a, m2b.
 Voor het rp2040-pi-maker is dit 8, 9, 10, 11.
 
-    r2d2 = R2d2(1 ,2, 5, 6)  
+    r2d2 = R2d2(8 ,9, 10, 11)  
 
 Vervolgens de test taak:
 

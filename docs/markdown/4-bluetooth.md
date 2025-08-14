@@ -1,4 +1,4 @@
-# Mechanotronica: Micropython cursus
+# Mechatronica: Micropython cursus
 ***
 
 ## [Home](../micropython-cursus.md)
@@ -13,7 +13,7 @@ Deze module heeft een blauwe led
 * die langzaam knippert, als er geen verbinding is. 
 * die strak blauw is als er wel een verbinding is.
 
-De bluetooth module is gekoppeld we aan de UART 1 van de rp2040-rp-maker board. Verwarrend genoeg is dat aansluiting  GROVE3. 
+De bluetooth module is gekoppeld aan de UART 1 van de rp2040-rp-maker board. Verwarrend genoeg is dat aansluiting  GROVE3. 
 
 Op de telefoon maken we gebruik van de Dabble App
 ![Dabble App ](../images/dabble-app.png)
@@ -32,7 +32,7 @@ Stappen:
 
 ### test 4.1 Eenvoudige bluetooth test
 
-In de library vinden we het Dabble object.
+In de library vinden we de Dabble en Gamepad class.
 
 Eerst dienen we deze te importeren, en vervolgens te maken:
 
@@ -128,5 +128,5 @@ Hiermee zegt de taak: ik heb even niks te doen. Op dat moment krijgen andere tak
 
 Zonder deze regel is er maar 1 taak aktief, en de andere taken komen niet meer aan bod.
 
-De taak van de task_blink is om te laten zien dat het programma nog "leeft". Men noemt deze taak ook wel de haertbeat taak.
+De taak van de task_blink is om te laten zien dat het programma nog "leeft". Men noemt deze taak ook wel de hartbeat taak.
 

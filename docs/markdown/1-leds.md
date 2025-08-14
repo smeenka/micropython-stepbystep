@@ -1,4 +1,4 @@
-# Mechanotronica: Micropython cursus
+# Mechatronica: Micropython cursus
 ***
 
 ## [Home](../micropython-cursus.md)
@@ -14,13 +14,29 @@
 * Kies de bovenste optie in de lijst: **Select interpreter ...**
 * kies de interpreter en de poort, zie volgend plaatje
 * Je hoeft dit maar een keer te doen, Thonny onthoudt wat je gekozen hebt.
-* ![Thonny opties](../images/thonny-options.png)
+---
+
+![Thonny opties](../images/thonny-options.png)
+---
 
 ### Test:
 * Druk in Thonny op de rode Stop knop
 * Als het goed is krijg je nu links 2 vensters: 
   * this computer
   * Raspberry Pi Pico
+
+---
+
+![Thonny connected](../images/thonny-connected.png)
+---
+
+* Links boven zie je het bestands systeem van de computer of laptop
+* Links onder zie je het bestands systeem van rp2040 micropython
+* Midden boven zie je het venster met het aktieve programma
+* Midden onder zie je de terminal. De >>> is de prompt, hier kun je direct opdrachten invoeren (bijvoorbeeld 6 * 318 en dan de enter toets)
+* Met de stop knop kun je een programma stoppen (en de verbinding herstellen)
+* Met de Run knop download en start je het aktieve programma.
+
 
 
 ## 1.1 De eenvoudig manier van besturen van leds
@@ -59,9 +75,11 @@
 * Eigenschappen van een taak:
   * een taak begint altijd met het woord **async def**
   * een taak moet altijd minstens een regel hebben met het woord **await**
-  * een taak heeft altijd een oneindige **while True** loop
+  * een taak heeft (bijna) altijd een oneindige **while True** loop
   * heel veel taken kunnen tegelijkertijd uitgevoerd worden
   
+
+Een taak kun je ook starten met parameters. Dit maakt het programmeren heel krachtig.
 
 #
     # Taak met 3 parameters: 

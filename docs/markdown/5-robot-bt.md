@@ -1,4 +1,4 @@
-# Mechanotronica: Micropython cursus
+# Mechatronica: Micropython cursus
 ***
 
 ## [Home](../micropython-cursus.md)
@@ -48,11 +48,11 @@ In het eerste gedeelte worden de knoppen van de gamepad bekeken:
 
 In het 2e gedeelte wordt de richting en de snelheid van de robot uitgerekend. Hier is een beetje rekenkunde voor nodig. 
 
-Het teken // dien je te leven als: deel het gehele getal door een ander geheel getal, er zorg ervoor dat het resultaat ook een geheel getal (integer) is.
+Het teken // dien je te lezen als: deel het gehele getal door een ander geheel getal, er zorg ervoor dat het resultaat ook een geheel getal (integer) is.
 
 Voorbeeld: 
 * p = 7 / 2 . Resultaat: p = 3.5 (p is een float)
-* = = 7 // 2 . Resultaat: p = 3 (p is een integer)
+* p = 7 // 2 . Resultaat: p = 3 (p is een integer)
  
 
 
@@ -77,8 +77,10 @@ Voorbeeld:
 ### Zelf uitproberen:
   * Zet de massa van de robot op 9 en kijk wat er gebeurt
   * Zet de massa van de robot op 0 en kijk wat er gebeurt
-  * Telkens als je op een knop drukt neemt de helderheid van de neopixel toe.
+  * Verander zodanig dat telkens als je op een knop drukt de helderheid van de neopixel toe neemt.
   * Kies andere functies voor de knoppen, bijvoorbeeld verschillende geluiden of verschillende kleuren.
+  * In de richting berekening zie je richting//4 Probeer andere getallen, en kijk wat het effect is.
+  * Moeilijk: probeer de robot te besturen met de hoek en straal functies van de gamepad.
 
   
 

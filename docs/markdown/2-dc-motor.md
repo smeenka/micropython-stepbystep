@@ -1,4 +1,4 @@
-# Mechanotronica: Micropython cursus
+# Mechatronica: Micropython cursus
 ***
 
 ## [Home](../micropython-cursus.md)
@@ -8,11 +8,12 @@
 De motor die we voor onze robot gebruiken is een dc-motor met een vertragings kast
   * De dc-motor loopt heel snel
   * De vertragings kast vertraagt de motor met 1 op 48. Als de motor 48 keer rond gaat gaat het wiel maar 1x rond
-* Kun je de dc-motor aanwijzen en de vertragings kast?de vertragings kast?
+* Kun je de dc-motor aanwijzen en de vertragings kast?
 
 ![dc motor met vertraging](../images/dc-motor.png)
 
 Het brein van de pi-maker (de rp2040) kan de motor niet direct aansturen. Daarvoor is een chip nodig. Dit is de chip tussen de motor test knoppen.
+
 * Kun je de motor chip aanwijzen?
 * Test de motor met de motor test knoppen
 
@@ -24,6 +25,13 @@ De motor wordt altijd aangestuurd met 2 IO poorten (A en B):
 | 0| 1| Achteruit |
 | 1| 0| Vooruit |
 | 1| 1| De motor staat uit |
+
+Naast de motor chip zitten 4 test knoppen om de motoren te testen.
+Het testen werkt alleen als er geen programma aktief is in de rp2040 (rode stop knop).
+Probeer de tabel hierboven met de test knoppen. Kun je het verschil voelen tussen de motor uit en de motor remt?
+
+Elke motor is altijd ook een dynamo. Dus als je aan het wiel draait, maak je stroom.
+Dit kun je testen door de rp2040 uit te schakelen. Draai nu aan het wiel. De motor leds gaan nu branden door de stroom die je maakt met de motor als dynamo.
 
 ## 2.1 De eenvoudig manier van besturen van de motor
 
