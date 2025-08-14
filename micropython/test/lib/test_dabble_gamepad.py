@@ -4,18 +4,15 @@
 # License: Creative Commons sy-sa  #
 # ---------------------------------#
 
-print("== test_4_1_bluetooth_gamepad ...")
+print("== test_dabble_gamepad ...")
 
-from bluetooth import Bluetooth
 import time
-
 from machine import Pin
 import asyncio
 from dabble import Dabble, Gamepad
 
 # Elke led is een IO pin in ouput mode (kan stroom leveren)
 led0    = Pin(0, mode=Pin.OUT)
-# bluetooth module verbonden met Grove port 3. Dit is uart nummer 1
 dabble = Dabble(1)
 g = Gamepad(dabble)
 
@@ -29,15 +26,25 @@ async def task_blink_led():
 
 async def show_task():
     while True:
-        await asyncio.sleep_ms(300)
-        print("snelheid:%s  richting:%s  start:%s  "%( g.snelheid(), g.richting(),g.isStart()))
-        #print("hoek:%s  straal:%s  start:%s  "%( g.hoek(), g.straal(),g.isStart()))
-        #print("select:%s  square:%s  triangle:%s  circle%s  cross:%s"%( g.isSelect(), g.isSquare(), g.isTriangle(), g.isCircle(), g.isCross()))
+        await asyncio.sleep_ms(10)
+        print("s:%s  r:%s  start:%s  select:%s  square:%s  triangle:%s  circle%s  cross:%s"%( g.snelheid(), g.richting(),g.isStart(), g.isSelect(), g.isSquare(), g.isTriangle(), g.isCircle(), g.isCross()))
 
-print("Start de dabble app op de telefoon en maak een bluetooth connectie met de robot")
-print("Kies de gamepad pagina en druk op toetsen")
 
 # definieer de taken die we willen gaan uitvoeren
 asyncio.create_task(task_blink_led())
 asyncio.create_task(show_task())
 asyncio.run(dabble.task())
+
+    
+    
+    
+
+        
+    
+    
+
+
+
+
+
+

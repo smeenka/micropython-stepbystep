@@ -7,6 +7,7 @@
 print("== Loading module buzzer ...")
 
 from machine import Pin, PWM, Timer
+import time
  
 class Buzzer:
     """ A class for generating tones with the buzzer. """
@@ -20,21 +21,26 @@ class Buzzer:
         """
  
         pin = Pin(pin, Pin.OUT)
-        self.buzzer = PWM(pin)    
+        self.buzzer = PWM(pin)
+        self.busy = False
  
     def mute(self, t = 0):
         self.buzzer.duty_u16(0)
+        time.sleep_ms(10)   
+        self.busy = False
  
     def setTone(self, freq: int, duration: int = 0):
         """ Set the frequency and the time for the tone
         args:
 
         """
-        self.buzzer.freq(freq)
-        self.buzzer.duty_u16(3_000)
-        if duration > 0:
-            timer = Timer(-1)
-            timer.init(mode=Timer.ONE_SHOT, period=duration, callback = self.mute)
+        if not self.busy:
+            self.busy = True
+            self.buzzer.freq(freq)
+            self.buzzer.duty_u16(3_000)
+            if duration > 0:
+                timer = Timer(-1)
+                timer.init(mode=Timer.ONE_SHOT, period=duration, callback = self.mute)
 
 if __name__ == "__main__":
     

@@ -31,42 +31,35 @@ class Bluetooth:
         else:
             return None
 
-    def line2string(self, line):
+    def line2string(self, buffer):
         """ Change byte buffer into a string"""    
-        if line:
-          return line.strip().decode("utf-8")
-        else:
-           return None
+        if buffer:
+            line = ""
+            try:
+                # vertaal de nummers in de buffer naar karakters
+                line = buffer.decode('utf-8')
+            except:
+                line ="data: "
+                for c in buffer:
+                    line = "%s - %2x"%(line,c)
+                line ="%s\n"%line
+            return line
+                
 
     def getCharacter(self):
-        # haal het karakter op uit de uart buffer
-        buffer = self.uart.read(1)
+        buffer =  self.uart.read(1)
         # vertaal de nummers in de buffer naar karakters
-        return buffer.decode('utf-8')
+        result = "."
+        try:
+            result = buffer.decode('utf-8')
+        except:
+            pass
+        return result
 
-    def getNumber(self):
+    def getByte(self):
         # haal het karakter op uit de uart buffer
-        buffer = self.uart.read(1)
+        buffer =  self.uart.read(1)
         return buffer[0]
-
-    def setBattery(self, battery):
-       self.uart.write("BAT:%s\n"%battery)
-
-    def setSpeed(self, speed):
-       self.uart.write("SPEED :%s\n"%speed)
-
-
-    async def task(self) :
-        adc =  ADC(Pin(29))
-        while True:
-            await asyncio.sleep(5)
-            batt = adc.read_u16() # read the raw value
-            batt = batt / 65535   # convert to fraction of 1
-            batt = 2 * 3.3 * batt # multiply with analog reference and compensate for internal divider
-            batt = batt - 3.00    # transform to percentage 3 volt = 0% 4.2 volt = 100 %
-            batt = 100 * batt / 1.20
-            batt = int(batt)      # transform to integer
-            self.setBattery(batt)   
 
 
 
@@ -90,22 +83,10 @@ if __name__ == "__main__":
               print("Regel:", as_string)
 
     #test_char()
-    #test_line()
+    test_line()
     
-    async def task_bt_receive():
-      while True:
-        await asyncio.sleep_ms(200)
-        line = bt.readline()
-        # wacht totdat er een regel is ontvangen via bluetooth
-        if line:
-            as_string = bt.line2string(line)
-            print("Regel:", as_string)
 
 
-    # definieer de taken die we willen gaan uitvoeren
-    print("Test de coroutine wait4line")
-    asyncio.create_task(task_bt_receive())
-    asyncio.run(bt.task())
 
 
  

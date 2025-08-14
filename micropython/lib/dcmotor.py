@@ -91,7 +91,7 @@ class Dcmotor:
 
     async def task(self) :
         while True:
-            await asyncio. sleep_ms(100)
+            await asyncio. sleep_ms(50)
             if self.actual < self.speed:
                 self.actual += self.increment
                 if self.actual > self.speed:

@@ -23,7 +23,8 @@ poll_obj = select.poll()
 poll_obj.register(sys.stdin, select.POLLIN)
 
 # setup the uart to which the bluetooth module is connected
-uart = UART(0, 115200)
+#vxcuart = UART(1, 115200)
+uart = UART(1, 9600)
 
 # Taak met 3 parameters: de led die we besturen, de aan tijd en de uit tijd
 async def task_blink_led():
@@ -47,13 +48,6 @@ async def task_bt_blink():
 
 #taak voor het ontvangen van regels van de computer
 async def task_receive_computer():
-    uart.write("AT+NAMEDJO-R2D2".encode())
-    await asyncio.sleep(1)
-    uart.write("AT H".encode())
-    await asyncio.sleep(1)
-    uart.write("AT BAUD.encode()")
-    await asyncio.sleep(1)
-    
     while True:
         await asyncio.sleep_ms(1)
         poll_results = poll_obj.poll(1) # how long it will wait for message before looping again (in milliseconds)
@@ -64,6 +58,17 @@ async def task_receive_computer():
           sys.stdout.write("received data: " + data )
           uart.write(data)
 
+async def task_setup_bluetooth():
+    print("Setup bluetooth. Baudrate must be 9600. Set name of bluetooth connection and baudrate")
+    print("setup only works if NOT connected")
+    await asyncio.sleep(1)
+    uart.write("AT+NAME=DJO-ROBOT-1".encode())
+    await asyncio.sleep(1)
+    uart.write("AT+BAUD=115200".encode())
+    print("Restart this program with baudrate = 115200")
+    
+
+
 
 #taak voor het ontvangen van regels van de bluetooth module
 async def task_receive_bluetooth():
@@ -71,16 +76,20 @@ async def task_receive_bluetooth():
         await asyncio.sleep_ms(1)
         if uart.any() > 0:
             event_blink.set()
-            buffer = uart.read(1)
-            # vertaal de nummers in de buffer naar karakters
-            #sys.stdout.write(buffer.decode('utf-8'))
-            sys.stdout.write(buffer)
+            buffer = uart.read()
+            if buffer and len(buffer)> 0:
+                # vertaal de nummers in de buffer naar karakters
+                sys.stdout.write(buffer.decode('utf-8'))
+                eol = buffer[-1]
+                if eol == 13 or eol == 10:
+                    sys.stdout.write("\n")
 
     
 # definieer de taken die we willen gaan uitvoeren
 asyncio.create_task(task_bt_blink())
 asyncio.create_task(task_receive_computer())
 asyncio.create_task(task_receive_bluetooth())
+asyncio.create_task(task_setup_bluetooth())
 
 print("Start het programma test_bluetooth_config (voor altijd)")
 
